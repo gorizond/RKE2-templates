@@ -1,0 +1,55 @@
+{{- $clustername := .Values.cluster.name }}
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  {{- if .Values.cluster.labels }}
+  labels:
+{{ toYaml .Values.cluster.labels | indent 4 }}
+  {{- end }}
+  {{- if .Values.cluster.annotations }}
+  annotations:
+{{ toYaml .Values.cluster.annotations | indent 4 }}
+  {{- end }}
+  name: {{ .Values.cluster.name }}
+  namespace: fleet-default
+spec:
+  {{- if .Values.cloudCredentialSecretName }}
+  cloudCredentialSecretName: {{ .Values.cloudCredentialSecretName }}
+  {{- end }}
+  kubernetesVersion: {{ .Values.kubernetesVersion }}
+  localClusterAuthEndpoint:
+    enabled: true
+  rkeConfig:
+    machinePools:
+    {{- range $index, $nodepool := .Values.nodepools }}
+    {{- if ne $nodepool.autoscale true }}
+    - name: {{ $clustername }}-{{ $nodepool.name }}
+      etcdRole: {{ $nodepool.etcd | default false }}
+      controlPlaneRole: {{ $nodepool.controlplane | default false }}
+      workerRole: {{ $nodepool.worker | default false }}
+      quantity: {{ $nodepool.quantity }}
+      {{- if $nodepool.labels }}
+      labels:
+{{ toYaml $nodepool.labels | indent 8 }}
+      {{- end }}
+      {{- if $nodepool.taints }}
+      taints:
+{{ toYaml $nodepool.taints | indent 8 }}
+      {{- end }}
+      machineConfigRef:
+        kind: HetznerConfig
+        name: {{ $clustername }}-{{ $nodepool.name }}
+    {{- end }}
+    {{- end }}
+    machineGlobalConfig:
+      cni: {{ .Values.cni }}
+    additionalManifest: 
+{{ toYaml .Values.additionalManifest | indent 6 }}
+    machineSelectorConfig:
+      - config:
+          cloud-provider-config: ''
+          cloud-provider-name: external
+    upgradeStrategy:
+{{ toYaml .Values.upgradeStrategy | indent 6 }}
+    etcd:
+{{ toYaml .Values.etcd | indent 6 }}

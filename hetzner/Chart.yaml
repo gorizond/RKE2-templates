@@ -1,0 +1,7 @@
+apiVersion: v1
+name: hetzner
+description: RKE2 autoscale cluster on Hetzner cloud
+version: 0.0.4
+annotations:
+  catalog.cattle.io/type: cluster-template
+  catalog.cattle.io/namespace: fleet-default

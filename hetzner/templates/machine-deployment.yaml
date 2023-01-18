@@ -1,0 +1,69 @@
+{{- $clustername := .Values.cluster.name }}
+{{- range $index, $nodepool := .Values.nodepools }}
+{{- if eq $nodepool.autoscale true }}
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  annotations:
+    objectset.rio.cattle.io/id: rke-cluster
+    objectset.rio.cattle.io/owner-gvk: provisioning.cattle.io/v1, Kind=Cluster
+    objectset.rio.cattle.io/owner-name: {{ $clustername }}
+    objectset.rio.cattle.io/owner-namespace: fleet-default
+    cluster.x-k8s.io/cluster-api-autoscaler-node-group-max-size: "{{ $nodepool.mazSize | default "10" }}"
+    cluster.x-k8s.io/cluster-api-autoscaler-node-group-min-size: "{{ $nodepool.minSize | default "1" }}"
+  labels:
+    cattle.io/os: linux
+    cluster.x-k8s.io/cluster-name: {{ $clustername }}
+    nodepool: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
+  namespace: fleet-default
+spec:
+  clusterName: {{ $clustername }}
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: {{ $clustername }}
+      cluster.x-k8s.io/deployment-name: {{ $clustername }}-{{ $nodepool.name }}
+  strategy:
+    rollingUpdate:
+      deletePolicy: Oldest
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        machine.cluster.x-k8s.io/exclude-node-draining: "true"
+        {{- if $nodepool.rkeLabels }}
+        rke.cattle.io/labels: '{{ $nodepool.rkeLabels }}'
+        {{- end }}
+        {{- if $nodepool.rkeTaints }}
+        rke.cattle.io/taints: '{{ $nodepool.rkeTaints }}'
+        {{- end }}
+      labels:
+        cattle.io/os: linux
+        cluster.x-k8s.io/cluster-name: {{ $clustername }}
+        cluster.x-k8s.io/deployment-name: {{ $clustername }}-{{ $nodepool.name }}
+        nodepool: {{ $nodepool.name }}
+        rke.cattle.io/cluster-name: {{ $clustername }}
+        rke.cattle.io/rke-machine-pool-name: {{ $clustername }}-{{ $nodepool.name }}
+        rke.cattle.io/worker-role: "true"
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: rke.cattle.io/v1
+          kind: RKEBootstrapTemplate
+          name: {{ $clustername }}-bootstrap-template
+          namespace: fleet-default
+      clusterName: {{ $clustername }}
+      infrastructureRef:
+        apiVersion: rke-machine.cattle.io/v1
+        kind: HetznerMachineTemplate
+        name: {{ $clustername }}-{{ $nodepool.name }}
+        namespace: fleet-default
+---
+{{- end }}
+{{- end }}
