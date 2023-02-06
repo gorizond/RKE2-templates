@@ -98,7 +98,6 @@ additionalManifest: |-
           app: hcloud-cloud-controller-manager
       spec:
         serviceAccountName: cloud-controller-manager
-        hostNetwork: true
         tolerations:
           - key: "node.cloudprovider.kubernetes.io/uninitialized"
             value: "true"
@@ -113,6 +112,9 @@ additionalManifest: |-
             effect: "NoSchedule"
           - key: "node-role.kubernetes.io/etcd"
             effect: NoExecute
+        dnsConfig:
+          nameservers:
+            - 1.1.1.1
         containers:
           - image: hetznercloud/hcloud-cloud-controller-manager:v1.13.2
             name: hcloud-cloud-controller-manager
