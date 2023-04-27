@@ -42,7 +42,7 @@ nodepools:
     worker: true
     quantity: 1
     serverLocation: fsn1
-    serverType: cpx41
+    serverType: cpx21
     rkeLabels: '{"nodepool":"worker"}'
 
 additionalManifest: |-
@@ -133,7 +133,7 @@ additionalManifest: |-
                   fieldRef:
                     fieldPath: spec.nodeName
               - name: HCLOUD_TOKEN
-                value: "<HCLOUD API TOKEN>"
+                value: {{ .Values.cloudCredentialSecretName }}
         priorityClassName: system-cluster-critical
   ---
   allowVolumeExpansion: true
@@ -382,7 +382,7 @@ additionalManifest: |-
                 apiVersion: v1
                 fieldPath: spec.nodeName
           - name: HCLOUD_TOKEN
-            value: "<HCLOUD API TOKEN>"
+            value: {{ .Values.cloudCredentialSecretName }}
           image: hetznercloud/hcloud-csi-driver:2.1.0
           imagePullPolicy: Always
           livenessProbe:
