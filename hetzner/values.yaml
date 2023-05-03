@@ -133,7 +133,7 @@ additionalManifest: |-
                   fieldRef:
                     fieldPath: spec.nodeName
               - name: HCLOUD_TOKEN
-                value: {{ .Values.cloudCredentialSecretName }}
+                value: REPLACE_TOKEN_TO_CLOUD_CREDENTIAL
         priorityClassName: system-cluster-critical
   ---
   allowVolumeExpansion: true
@@ -382,7 +382,7 @@ additionalManifest: |-
                 apiVersion: v1
                 fieldPath: spec.nodeName
           - name: HCLOUD_TOKEN
-            value: {{ .Values.cloudCredentialSecretName }}
+            value: REPLACE_TOKEN_TO_CLOUD_CREDENTIAL
           image: hetznercloud/hcloud-csi-driver:2.1.0
           imagePullPolicy: Always
           livenessProbe:
