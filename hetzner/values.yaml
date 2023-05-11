@@ -42,7 +42,7 @@ nodepools:
     worker: true
     quantity: 1
     serverLocation: fsn1
-    serverType: cpx21
+    serverType: cpx31
     rkeLabels: '{"nodepool":"worker"}'
 
 additionalManifest: |-
