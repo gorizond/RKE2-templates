@@ -42,7 +42,7 @@ spec:
     {{- end }}
     {{- end }}
     machineGlobalConfig:
-      cni: {{ .Values.cni }}
+{{ toYaml .Values.machineGlobalConfig | indent 6 }}
     additionalManifest: 
 {{ toYaml .Values.additionalManifest | indent 6 }}
     chartValues: 
