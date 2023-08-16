@@ -45,6 +45,8 @@ spec:
       cni: {{ .Values.cni }}
     additionalManifest: 
 {{ toYaml .Values.additionalManifest | indent 6 }}
+    chartValues: 
+{{ toYaml .Values.chartValues | indent 6 }}
     machineSelectorConfig:
       - config:
           cloud-provider-config: ''
