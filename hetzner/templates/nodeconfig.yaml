@@ -10,8 +10,8 @@ metadata:
 apiToken: null
 autoSpread: {{ $nodepool.autoSpread | default "false" }}
 disablePublic: {{ $nodepool.disablePublic | default "false" }}
-disablePublic4: {{ $nodepool.disablePublic4 | default "false" }}
-disablePublic6: {{ $nodepool.disablePublic6 | default "false" }}
+disablePublicIpv4: {{ $nodepool.disablePublicIpv4 | default "false" }}
+disablePublicIpv6: {{ $nodepool.disablePublicIpv6 | default "false" }}
 existingKeyId: {{ $nodepool.existingKeyId | default "null" }}
 existingKeyPath: {{ $nodepool.existingKeyPath | default "null" }}
 image: {{ $hetzner.image }}
