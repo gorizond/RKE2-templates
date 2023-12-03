@@ -80,7 +80,6 @@ additionalManifest: |-
     repo: https://charts.hetzner.cloud
     chart: hcloud-cloud-controller-manager
     targetNamespace: kube-system
-    node-role.kubernetes.io/etcd
     valuesContent: |-
       additionalTolerations:      
         - key: "node-role.kubernetes.io/etcd"
