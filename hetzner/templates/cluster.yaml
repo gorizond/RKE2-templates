@@ -28,6 +28,11 @@ spec:
       controlPlaneRole: {{ $nodepool.controlplane | default false }}
       workerRole: {{ $nodepool.worker | default false }}
       quantity: {{ $nodepool.quantity }}
+      {{- if eq $nodepool.autoscale true }}
+      machineDeploymentAnnotations:
+        cluster.provisioning.cattle.io/autoscaler-min-size: "{{ $nodepool.minSize | default "1" }}"
+        cluster.provisioning.cattle.io/autoscaler-max-size: "{{ $nodepool.maxSize | default "10" }}"
+      {{- end }}
       {{- if $nodepool.labels }}
       labels:
 {{ toYaml $nodepool.labels | indent 8 }}
