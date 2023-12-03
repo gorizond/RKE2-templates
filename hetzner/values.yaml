@@ -76,9 +76,14 @@ additionalManifest: |-
     name: hcloud-cloud-controller-manager
     namespace: kube-system
   spec:
+    bootstrap: true
     repo: https://charts.hetzner.cloud
     chart: hcloud-cloud-controller-manager
     targetNamespace: kube-system
+    node-role.kubernetes.io/etcd
+    additionalTolerations:      
+      - key: "node-role.kubernetes.io/etcd"
+        effect: NoExecute
   ---
   apiVersion: helm.cattle.io/v1
   kind: HelmChart
