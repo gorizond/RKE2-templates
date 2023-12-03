@@ -1,7 +1,7 @@
 apiVersion: v1
 name: hetzner-cloud
 description: Gorizond RKE2 autoscale cluster on Hetzner cloud
-version: 0.0.6
+version: 0.0.7
 annotations:
   catalog.cattle.io/type: cluster-template
   catalog.cattle.io/namespace: fleet-default

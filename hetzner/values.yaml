@@ -62,6 +62,14 @@ additionalManifest: |-
           operator: Equal
           value: service
   ---
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: hcloud
+      namespace: kube-system
+    data: 
+      token: REPLACE_TOKEN_TO_CLOUD_CREDENTIAL_BTOA
+  ---
   apiVersion: helm.cattle.io/v1
   kind: HelmChart
   metadata:
@@ -71,10 +79,6 @@ additionalManifest: |-
     repo: https://charts.hetzner.cloud
     chart: hcloud-cloud-controller-manager
     targetNamespace: kube-system
-    valuesContent: |-
-      env:
-        HCLOUD_TOKEN:
-          value: REPLACE_TOKEN_TO_CLOUD_CREDENTIAL
   ---
   apiVersion: helm.cattle.io/v1
   kind: HelmChart
@@ -85,9 +89,6 @@ additionalManifest: |-
     repo: https://charts.hetzner.cloud
     chart: hcloud-csi
     targetNamespace: kube-system
-    valuesContent: |-
-      hcloudToken:
-        value: REPLACE_TOKEN_TO_CLOUD_CREDENTIAL
 
 upgradeStrategy:
   controlPlaneConcurrency: "1"
