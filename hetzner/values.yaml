@@ -81,9 +81,10 @@ additionalManifest: |-
     chart: hcloud-cloud-controller-manager
     targetNamespace: kube-system
     node-role.kubernetes.io/etcd
-    additionalTolerations:      
-      - key: "node-role.kubernetes.io/etcd"
-        effect: NoExecute
+    valuesContent: |-
+      additionalTolerations:      
+        - key: "node-role.kubernetes.io/etcd"
+          effect: NoExecute
   ---
   apiVersion: helm.cattle.io/v1
   kind: HelmChart
