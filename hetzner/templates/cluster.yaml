@@ -22,7 +22,6 @@ spec:
   rkeConfig:
     machinePools:
     {{- range $index, $nodepool := .Values.nodepools }}
-    {{- if ne $nodepool.autoscale true }}
     - name: {{ $clustername }}-{{ $nodepool.name }}
       etcdRole: {{ $nodepool.etcd | default false }}
       controlPlaneRole: {{ $nodepool.controlplane | default false }}
@@ -44,7 +43,6 @@ spec:
       machineConfigRef:
         kind: HetznerConfig
         name: {{ $clustername }}-{{ $nodepool.name }}
-    {{- end }}
     {{- end }}
     machineGlobalConfig:
 {{ toYaml .Values.machineGlobalConfig | indent 6 }}
