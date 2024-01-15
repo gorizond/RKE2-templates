@@ -10,3 +10,18 @@ questions:
   label: "CloudCredential Name"
   type: cloudcredential
   group: "General"
+- variable: yandex.token
+  description: "Yandex token"
+  label: "Yandex token"
+  type: string
+  group: "General"
+- variable: yandex.cloudId
+  description: "Yandex cloud ID"
+  label: "Yandex cloud ID"
+  type: string
+  group: "General"
+- variable: yandex.folderId
+  description: "Yandex folder ID"
+  label: "Yandex folder ID"
+  type: string
+  group: "General"
