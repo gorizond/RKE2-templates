@@ -46,8 +46,8 @@ nodepools:
     worker: true
     quantity: 1
     coreFraction: 20
-    cpu: 1
-    memory: 1
+    cpu: 2
+    memory: 2
     disk: 20
     labels:
       nodepool: loadbalancer
