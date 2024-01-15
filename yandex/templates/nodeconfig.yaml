@@ -1,0 +1,35 @@
+{{- $clustername := .Values.cluster.name }}
+{{- $yandex := .Values.yandex }}
+{{- range $index, $nodepool := .Values.nodepools }}
+apiVersion: rke-machine-config.cattle.io/v1
+kind: YandexConfig
+metadata:
+  generateName: {{ $clustername }}-{{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
+  namespace: fleet-default
+endpoint: {{ $yandex.endpoint }}
+folderId: {{ $yandex.folderId }}
+imageFamily: {{ $yandex.imageFamily }}
+imageFolderId: {{ $yandex.imageFolderId }}
+platformId: {{ $yandex.platformId }}
+useInternalIp: {{ $yandex.useInternalIp }}
+cloudId: {{ $yandex.cloudId }}
+coreFraction: "{{ $nodepool.coreFraction | default "100" }}"
+cores: "{{ $nodepool.cpu | default "2" }}"
+diskSize: "{{ $nodepool.disk | default "15" }}"
+diskType: {{ $nodepool.diskType | default "network-hdd" }}
+memory: "{{ $nodepool.memory | default "4" }}"
+nat: {{ $nodepool.nat | default false }}
+preemptible: {{ $nodepool.preemptible | default false }}
+sshPort: "22"
+sshUser: ubuntu
+staticAddress: {{ $nodepool.staticAddress | default "null" }}
+useInternalIp: {{ $nodepool.useInternalIp | default true }}
+subnetId: {{ $nodepool.subnetId | default "null" }}
+zone: {{ $nodepool.zone | default "ru-central1-a" }}
+token: {{ $yandex.token }}
+saId: ""
+saKeyFile: ""
+securityGroups: []
+---
+{{- end }}

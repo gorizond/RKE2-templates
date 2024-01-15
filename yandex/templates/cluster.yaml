@@ -1,0 +1,58 @@
+{{- $clustername := .Values.cluster.name }}
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  {{- if .Values.cluster.labels }}
+  labels:
+{{ toYaml .Values.cluster.labels | indent 4 }}
+  {{- end }}
+  {{- if .Values.cluster.annotations }}
+  annotations:
+{{ toYaml .Values.cluster.annotations | indent 4 }}
+  {{- end }}
+  name: {{ .Values.cluster.name }}
+  namespace: fleet-default
+spec:
+  {{- if .Values.cloudCredentialSecretName }}
+  cloudCredentialSecretName: {{ .Values.cloudCredentialSecretName }}
+  {{- end }}
+  kubernetesVersion: {{ .Values.kubernetesVersion }}
+  localClusterAuthEndpoint:
+    enabled: true
+  rkeConfig:
+    machinePools:
+    {{- range $index, $nodepool := .Values.nodepools }}
+    - name: {{ $clustername }}-{{ $nodepool.name }}
+      etcdRole: {{ $nodepool.etcd | default false }}
+      controlPlaneRole: {{ $nodepool.controlplane | default false }}
+      workerRole: {{ $nodepool.worker | default false }}
+      quantity: {{ $nodepool.quantity }}
+      {{- if eq $nodepool.autoscale true }}
+      machineDeploymentAnnotations:
+        cluster.provisioning.cattle.io/autoscaler-min-size: "{{ $nodepool.minSize | default "1" }}"
+        cluster.provisioning.cattle.io/autoscaler-max-size: "{{ $nodepool.maxSize | default "10" }}"
+      {{- end }}
+      {{- if $nodepool.labels }}
+      labels:
+{{ toYaml $nodepool.labels | indent 8 }}
+      {{- end }}
+      {{- if $nodepool.taints }}
+      taints:
+{{ toYaml $nodepool.taints | indent 8 }}
+      {{- end }}
+      machineConfigRef:
+        kind: YandexConfig
+        name: {{ $clustername }}-{{ $nodepool.name }}
+    {{- end }}
+    machineGlobalConfig:
+{{ toYaml .Values.machineGlobalConfig | indent 6 }}
+    additionalManifest: 
+{{ toYaml .Values.additionalManifest | indent 6 }}
+    chartValues: 
+{{ toYaml .Values.chartValues | indent 6 }}
+    machineSelectorConfig:
+{{ toYaml .Values.machineSelectorConfig | indent 6 }}
+    upgradeStrategy:
+{{ toYaml .Values.upgradeStrategy | indent 6 }}
+    etcd:
+{{ toYaml .Values.etcd | indent 6 }}

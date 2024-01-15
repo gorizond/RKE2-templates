@@ -1,0 +1,7 @@
+apiVersion: v1
+name: yandex-cloud
+description: Gorizond RKE2 autoscale cluster on Yandex cloud
+version: 0.0.1
+annotations:
+  catalog.cattle.io/type: cluster-template
+  catalog.cattle.io/namespace: fleet-default
