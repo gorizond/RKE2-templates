@@ -12,7 +12,6 @@ folderId: {{ $yandex.folderId }}
 imageFamily: {{ $yandex.imageFamily }}
 imageFolderId: {{ $yandex.imageFolderId }}
 platformId: {{ $yandex.platformId }}
-useInternalIp: {{ $yandex.useInternalIp }}
 cloudId: {{ $yandex.cloudId }}
 coreFraction: "{{ $nodepool.coreFraction | default "100" }}"
 cores: "{{ $nodepool.cpu | default "2" }}"
@@ -24,7 +23,7 @@ preemptible: {{ $nodepool.preemptible | default false }}
 sshPort: "22"
 sshUser: ubuntu
 staticAddress: {{ $nodepool.staticAddress | default "null" }}
-useInternalIp: {{ $nodepool.useInternalIp | default true }}
+useInternalIp: {{ $nodepool.useInternalIp | $yandex.useInternalIp }}
 subnetId: {{ $nodepool.subnetId | default "null" }}
 zone: {{ $nodepool.zone | default "ru-central1-a" }}
 token: {{ $yandex.token }}
