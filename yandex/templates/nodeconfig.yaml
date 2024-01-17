@@ -23,7 +23,7 @@ preemptible: {{ $nodepool.preemptible | default false }}
 sshPort: "22"
 sshUser: ubuntu
 staticAddress: {{ $nodepool.staticAddress | default "null" }}
-useInternalIp: {{ $nodepool.useInternalIp | $yandex.useInternalIp }}
+useInternalIp: {{ $nodepool.useInternalIp | default $yandex.useInternalIp }}
 subnetId: {{ $nodepool.subnetId | default "null" }}
 zone: {{ $nodepool.zone | default "ru-central1-a" }}
 token: {{ $yandex.token }}
