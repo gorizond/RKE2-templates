@@ -27,6 +27,7 @@ useInternalIp: {{ $nodepool.useInternalIp | default $yandex.useInternalIp }}
 subnetId: {{ $nodepool.subnetId | default "null" }}
 zone: {{ $nodepool.zone | default "ru-central1-a" }}
 token: {{ $yandex.token }}
+userdata: {{ $nodepool.userdata | default "null" }}
 saId: ""
 saKeyFile: ""
 securityGroups: []
